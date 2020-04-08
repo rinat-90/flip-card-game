@@ -67,8 +67,8 @@
         for(let i = 0; i < 4; i++){
           tempArr.push(this.values)
         }
-        this.values = tempArr.reduce(this.makeArray);
-        this.cards = this.shuffle(this.values.map(this.makeCard))
+        const flat = tempArr.reduce(this.flatArray);
+        this.cards = this.shuffle(flat.map(this.makeCard))
       },
       makeCard(card){
         return {
@@ -77,7 +77,7 @@
           isMatch: false
         }
       },
-      makeArray(prev, curr){
+      flatArray(prev, curr){
         return prev.concat(curr);
       },
       shuffle(cards) {
