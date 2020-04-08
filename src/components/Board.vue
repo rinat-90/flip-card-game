@@ -38,12 +38,10 @@
           this.$emit('count');
           const lastCard = this.lastCard;
           this.lastCard = null;
-
           setTimeout(()=> {
             lastCard.isMatch = true;
             e.isMatch = true
           },1000)
-
         }
         const lastCard = this.lastCard;
         this.lastCard = null;
@@ -51,7 +49,6 @@
           this.flipCards([lastCard, e]);
           this.$emit('count');
         }, 1000);
-
       },
       onFlipCard(card){
         const c = this.cards.find(cc => cc === card);
