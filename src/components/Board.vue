@@ -1,8 +1,8 @@
 <template>
-  <div class="board" v-if="filteredCards.length">
-    <Card v-for="(card, i) in filteredCards"
+  <div class="board" v-if="cards.length">
+    <Card v-for="(card, i) in cards"
           :key="i"
-          :option="card"
+          :card="card"
           @flipped="onFlipped"
           @flipCard="onFlipCard"/>
   </div>
@@ -14,9 +14,13 @@
   export default {
     name: "Board",
     components:{ Card },
+    computed:{
+      isAllMatched(){
+        return this.cards.filter(c => c.isMatch).length;
+      }
+    },
     created(){
       this.start()
-
     },
     data(){
       return {
@@ -25,12 +29,39 @@
         cards:[]
       }
     },
-    computed:{
-      filteredCards(){
-        return this.cards.length && this.cards.filter(c => !c.match);
-      }
-    },
     methods: {
+      onFlipped(e){
+        if (!this.lastCard) {
+          return (this.lastCard = e)
+        }
+        if (this.lastCard !== e && this.lastCard.value === e.value) {
+          this.$emit('count');
+          const lastCard = this.lastCard;
+          this.lastCard = null;
+
+          setTimeout(()=> {
+            lastCard.isMatch = true;
+            e.isMatch = true
+          },1000)
+
+        }
+        const lastCard = this.lastCard;
+        this.lastCard = null;
+        setTimeout(() => {
+          this.flipCards([lastCard, e]);
+          this.$emit('count');
+        }, 1000);
+
+      },
+      onFlipCard(card){
+        const c = this.cards.find(cc => cc === card);
+        c.flipped = !c.flipped
+      },
+      flipCards(cards){
+        this.cards
+          .filter(c => cards.indexOf(c) >= 0)
+          .forEach(c => c.flipped = !c.flipped);
+      },
       start(){
         const tempArr = [];
         for(let i = 0; i < 4; i++){
@@ -38,7 +69,6 @@
         }
         this.values = tempArr.reduce(this.makeArray);
         this.cards = this.shuffle(this.values.map(this.makeCard))
-
       },
       makeCard(card){
         return {
@@ -52,41 +82,15 @@
       },
       shuffle(cards) {
         return cards.sort(() => Math.random() - 0.5);
-      },
-      removeCards(cards){
-        return this.cards.filter(card => !cards.includes(card))
-      },
-      onFlipped(e){
-        if (!this.lastCard) {
-          return (this.lastCard = e)
+      }
+    },
+    watch:{
+      isAllMatched(val){
+        if(val === 24){
+          this.start();
+          this.$emit('start');
         }
-        if (this.lastCard !== e && this.lastCard.value === e.value) {
-          this.$emit('count');
-          const lastCard = this.lastCard;
-          this.lastCard = null;
-          setTimeout(()=> {
-            lastCard.isMatch = true;
-            e.isMatch = true
-          },1000)
-
-        }
-        const lastCard = this.lastCard;
-        this.lastCard = null;
-        setTimeout(() => {
-          this.flipCards([lastCard, e]);
-          this.$emit('count');
-        }, 1500);
-
-      },
-      onFlipCard(card){
-        const c = this.cards.find(cc => cc === card);
-        c.flipped = !c.flipped
-      },
-      flipCards(cards){
-        this.cards
-          .filter(c => cards.indexOf(c) >= 0)
-          .forEach(c => c.flipped = !c.flipped);
-      },
+      }
     }
   }
 </script>

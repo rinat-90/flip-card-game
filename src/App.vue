@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="header">
-      <div><a href="#" class="header-logo">Flip Card</a></div>
+      <div><a href="https://github.com/rinat-90/flip-card-game" target="_blank" class="header-logo">{{ title }}</a></div>
       <div><span class="num">tries: {{ num }}</span></div>
     </div>
     <Board @count="num++"  @start="num = 0"/>
@@ -15,6 +15,7 @@
     components: { Board },
     data(){
       return {
+        title: 'Memory game',
         num: 0
       }
     }

@@ -1,12 +1,12 @@
 <template>
   <div class="wrapper" @click="flip">
-    <div class="card" :class="{ flipped: option.flipped }" v-if="!option.isMatch">
-      <img v-if="option.value === 'apple'" class="front" src="../assets/img/apple.svg" />
-      <img v-if="option.value === 'banana'" class="front" src="../assets/img/banana.svg" />
-      <img v-if="option.value === 'lemon'" class="front" src="../assets/img/lemon.svg" />
-      <img v-if="option.value === 'pear'" class="front" src="../assets/img/pear.svg" />
-      <img v-if="option.value === 'pineapple'" class="front" src="../assets/img/pineapple.svg" />
-      <img v-if="option.value === 'strawberry'" class="front" src="../assets/img/strawberry.svg" />
+    <div class="card" :class="{ flipped: card.flipped }" v-show="!card.isMatch">
+      <img v-if="card.value === 'apple'" class="front" src="../assets/img/apple.svg" />
+      <img v-if="card.value === 'banana'" class="front" src="../assets/img/banana.svg" />
+      <img v-if="card.value === 'lemon'" class="front" src="../assets/img/lemon.svg" />
+      <img v-if="card.value === 'pear'" class="front" src="../assets/img/pear.svg" />
+      <img v-if="card.value === 'pineapple'" class="front" src="../assets/img/pineapple.svg" />
+      <img v-if="card.value === 'strawberry'" class="front" src="../assets/img/strawberry.svg" />
 
 
       <img class="back" src="../assets/img/card.svg" />
@@ -17,7 +17,7 @@
 <script>
   export default {
     props: {
-      option: {
+      card: {
         type: Object,
         default() {
           return {
@@ -29,9 +29,9 @@
     },
     methods:{
       flip(){
-        if (this.option.flipped) return;
-        this.$emit('flipCard', this.option);
-        this.$emit('flipped', this.option)
+        if (this.card.flipped) return;
+        this.$emit('flipCard', this.card);
+        this.$emit('flipped', this.card)
       }
     }
 
