@@ -7,6 +7,12 @@
       <img v-if="card.value === 'pear'" class="front" src="../assets/img/pear.svg" />
       <img v-if="card.value === 'pineapple'" class="front" src="../assets/img/pineapple.svg" />
       <img v-if="card.value === 'strawberry'" class="front" src="../assets/img/strawberry.svg" />
+      <img v-if="card.value === 'carrot'" class="front" src="../assets/img/carrot.svg" />
+      <img v-if="card.value === 'eggplant'" class="front" src="../assets/img/eggplant.svg" />
+      <img v-if="card.value === 'onion'" class="front" src="../assets/img/onion.svg" />
+      <img v-if="card.value === 'paprika'" class="front" src="../assets/img/paprika.svg" />
+      <img v-if="card.value === 'tomato'" class="front" src="../assets/img/tomato.svg" />
+      <img v-if="card.value === 'cherry'" class="front" src="../assets/img/cherry.svg" />
 
 
       <img class="back" src="../assets/img/card.svg" />

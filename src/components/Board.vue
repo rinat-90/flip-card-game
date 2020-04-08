@@ -25,7 +25,7 @@
     data(){
       return {
         lastCard: null,
-        values: ['apple', 'banana', 'lemon', 'pear', 'pineapple', 'strawberry'],
+        values: ['apple', 'banana', 'lemon', 'pear', 'pineapple', 'cherry', 'strawberry', 'paprika', 'carrot', 'eggplant', 'tomato', 'onion'],
         cards:[]
       }
     },
@@ -63,12 +63,8 @@
           .forEach(c => c.flipped = !c.flipped);
       },
       start(){
-        const tempArr = [];
-        for(let i = 0; i < 4; i++){
-          tempArr.push(this.values)
-        }
-        const flat = tempArr.reduce(this.flatArray);
-        this.cards = this.shuffle(flat.map(this.makeCard))
+        const cc = this.values.concat(this.values).map(this.makeCard);
+        this.cards = this.shuffle(cc)
       },
       makeCard(card){
         return {
@@ -76,9 +72,6 @@
           flipped: false,
           isMatch: false
         }
-      },
-      flatArray(prev, curr){
-        return prev.concat(curr);
       },
       shuffle(cards) {
         return cards.sort(() => Math.random() - 0.5);
