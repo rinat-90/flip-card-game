@@ -1,19 +1,11 @@
 <template>
   <div class="wrapper" @click="flip">
     <div class="card" :class="{ flipped: card.flipped }" v-show="!card.isMatch">
-      <img v-if="card.value === 'apple'" class="front" src="../assets/img/apple.svg" />
-      <img v-if="card.value === 'banana'" class="front" src="../assets/img/banana.svg" />
-      <img v-if="card.value === 'lemon'" class="front" src="../assets/img/lemon.svg" />
-      <img v-if="card.value === 'pear'" class="front" src="../assets/img/pear.svg" />
-      <img v-if="card.value === 'pineapple'" class="front" src="../assets/img/pineapple.svg" />
-      <img v-if="card.value === 'strawberry'" class="front" src="../assets/img/strawberry.svg" />
-      <img v-if="card.value === 'carrot'" class="front" src="../assets/img/carrot.svg" />
-      <img v-if="card.value === 'eggplant'" class="front" src="../assets/img/eggplant.svg" />
-      <img v-if="card.value === 'onion'" class="front" src="../assets/img/onion.svg" />
-      <img v-if="card.value === 'paprika'" class="front" src="../assets/img/paprika.svg" />
-      <img v-if="card.value === 'tomato'" class="front" src="../assets/img/tomato.svg" />
-      <img v-if="card.value === 'cherry'" class="front" src="../assets/img/cherry.svg" />
-
+      <img
+          v-if="values.includes(card.value)"
+          :src="require(`../assets/img/${card.value}.svg`)"
+          :alt="card.value"
+          class="front" />
 
       <img class="back" src="../assets/img/card.svg" />
     </div>
@@ -23,6 +15,7 @@
 <script>
   export default {
     props: {
+      values: Array,
       card: {
         type: Object,
         default() {
@@ -46,12 +39,11 @@
 
 <style scoped>
   .wrapper {
-    width: 100px;
-    height: 150px;
+    width: 100%;
+    height: 140px;
     cursor: pointer;
     position: relative;
     perspective: 800px;
-    display: inline-flex;
   }
   .card {
     width: 100%;
@@ -82,7 +74,7 @@
 
   @media screen and (max-width: 600px) {
     .wrapper {
-      width: 90px;
+      width: 100%;
       height: 150px;
       margin-right: 1px;
     }

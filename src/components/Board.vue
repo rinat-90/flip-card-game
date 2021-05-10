@@ -1,10 +1,13 @@
 <template>
   <div class="board" v-if="cards.length">
-    <Card v-for="(card, i) in cards"
-          :key="i"
-          :card="card"
-          @flipped="onFlipped"
-          @flipCard="onFlipCard"/>
+    <Card
+        v-for="(card, i) in cards"
+        :key="i"
+        :card="card"
+        :values="values"
+        @flipped="onFlipped"
+        @flipCard="onFlipCard"
+    />
   </div>
 </template>
 
@@ -14,19 +17,16 @@
   export default {
     name: "Board",
     components:{ Card },
-    computed:{
-      isAllMatched(){
-        return this.cards.filter(c => c.isMatch).length;
-      }
-    },
-    created(){
-      this.start()
-    },
     data(){
       return {
         lastCard: null,
         values: ['apple', 'banana', 'lemon', 'pear', 'pineapple', 'cherry', 'strawberry', 'paprika', 'carrot', 'eggplant', 'tomato', 'onion'],
-        cards:[]
+        cards:[],
+      }
+    },
+    computed:{
+      isAllMatched(){
+        return this.cards.filter(c => c.isMatch).length;
       }
     },
     methods: {
@@ -38,11 +38,13 @@
           this.$emit('count');
           const lastCard = this.lastCard;
           this.lastCard = null;
+
           setTimeout(()=> {
             lastCard.isMatch = true;
             e.isMatch = true
           },1000)
         }
+
         const lastCard = this.lastCard;
         this.lastCard = null;
         setTimeout(() => {
@@ -56,23 +58,26 @@
       },
       flipCards(cards){
         this.cards
-          .filter(c => cards.indexOf(c) >= 0)
+          .filter(c => cards.includes(c))
           .forEach(c => c.flipped = !c.flipped);
       },
       start(){
-        const cc = this.values.concat(this.values).map(this.makeCard);
+        const cc = [...this.values, ...this.values].map(this.makeCard);
         this.cards = this.shuffle(cc)
       },
       makeCard(card){
         return {
           value: card,
           flipped: false,
-          isMatch: false
+          isMatch: false,
         }
       },
       shuffle(cards) {
         return cards.sort(() => Math.random() - 0.5);
       }
+    },
+    created(){
+      this.start()
     },
     watch:{
       isAllMatched(val){
@@ -86,17 +91,14 @@
 </script>
 
 <style scoped>
+
   .board{
-    width: 100%;
-    height: 100vh;
-    background-color: #3d414d;
-    margin-top: 10px;
-    border-radius: 4px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    align-content: space-between;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, minmax(1%, 1fr));
+    max-width: 900px;
+    height: calc(100vh - 200px);
+    gap: 10px;
   }
   .wrapper:nth-child(4n) {
     margin-right: 0px;
@@ -105,8 +107,8 @@
   @media screen and (max-width: 450px) {
     .board {
       width: 100%;
-      height: 100vh;
-      justify-content: space-around;
+      height: calc(100vh - 50px);
+      gap: 0;
     }
   }
 </style>
